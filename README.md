@@ -10,7 +10,7 @@ Seja bem-vindo! Este desafio foi projetado para avaliar a sua capacidade técnic
 - Após finalizar, submeta um pull request com um comentário informando o seu e-mail de contato e aguarde nossa avaliação.
 
 ## Proposta
-Você deverá desenvolver um projeto utilizando Razor no front-end e c# no back-end com a finalidade de que seja possível listar, visualizar, criar, editar e excluir animais de estimação de uma petshop.
+Você deverá desenvolver um projeto utilizando Razor no front-end e c# (.net framework ou .net core) no back-end com a finalidade de que seja possível listar, visualizar, criar, editar e excluir animais de estimação de uma petshop.
 
 **Observações:**
 > - Você pode utilizar qualquer banco de dados relacional disponível;
