@@ -1,0 +1,152 @@
+﻿@model PetShopWebApp.Models.AnimalModel
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h1>Editar Animal</h1>
+<script>
+
+    async function RequestAjax(url, params, metodo) {
+        metodo = metodo == undefined || metodo == "" ? "GET" : metodo;
+
+        let result;
+
+        await $.ajax({
+            url: url,
+            data: params,
+            method: metodo,
+            async: true
+        }).done(async function (data) {
+            result = data;
+        });
+
+        return result;
+    }
+
+    async function editar() {
+        var nome = document.getElementById("nome").value;
+        var idade = document.getElementById("idade").value;
+        var tipo = document.getElementById("tipo").value;
+        var raca = document.getElementById("raca").value;
+
+        var idU = document.getElementById("idU").value;
+        var nomeU = document.getElementById("nomeU").value;
+        var telefone = document.getElementById("telefone").value;
+        var email = document.getElementById("email").value;
+        var endereco = document.getElementById("endereco").value;
+
+        var responsavel = {
+            nome: nomeU,
+            telefone: telefone,
+            email: email,
+            endereco: endereco
+        }
+
+        const req = await RequestAjax("/Usuario/EditarUsuario", { usuario: responsavel, id: idU }, "PUT")
+        if (!req.erro) {
+            var animal = {
+                nome: nome,
+                idade: idade,
+                tipo: tipo,
+                raca: raca,
+                usuarioId: req.data.id
+            }
+            const req2 = await RequestAjax("/Animal/EditarAnimal", { animal: animal, id: @Model.Id  }, "PUT")
+            if (!req2.erro) {
+                window.location.href = '/Animal/Index'
+            }
+        }
+
+        
+    }
+
+    function preencherSelect() {
+        var status = @Model.Tipo; 
+        var select = document.getElementById("tipo");
+        select.value = status; 
+    }
+
+    async function  preencherDadosUsuario() {
+        const req = await RequestAjax("/Usuario/PegarUsuario", { id: @Model.UsuarioId }, "GET")
+        if (!req.erro) {
+            console.log(req.data.id)
+            var idU = document.getElementById("idU");
+            var nomeU = document.getElementById("nomeU");
+            var telefone = document.getElementById("telefone");
+            var email = document.getElementById("email");
+            var endereco = document.getElementById("endereco");
+
+            idU.value = req.data.id;
+            nomeU.value = req.data.nome;
+            telefone.value = req.data.telefone;
+            email.value = req.data.email;
+            endereco.value = req.data.endereco;
+
+        }
+       
+    }
+
+    window.onload = async function () {
+        await preencherDadosUsuario();
+    };
+
+
+</script>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="formEditar">
+            <h4>Dados do animal</h4>
+            <div class="form-group">
+                <label for="nome" class="control-label">Nome:</label>
+                <input type="text" class="form-control" id="nome" name="nome" value="@Model.Nome">
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="idade" class="control-label">Descrição:</label>
+                <input type="text" class="form-control" id="idade" name="idade" value="@Model.Idade">
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="tipo" class="control-label">Tipo:</label>
+                <select class="form-control" id="tipo" name="tipo">
+                    <option value="1">Gato</option>
+                    <option value="2">Cachorro</option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="raca" class="control-label">Raça:</label>
+                <input type="text" class="form-control" id="raca" name="raca" value="@Model.Raca">
+                <span class="text-danger"></span>
+            </div>
+            <h4 class="mt-4"> Dados do reponsável</h4>
+            <div class="form-group d-none opacity-0">
+                <input class="form-control  d-none opacity-0" id="idU" name="idU">
+            </div>
+            <div class="form-group">
+                <label for="nomeU">Nome:</label>
+                <input class="form-control" id="nomeU" name="nomeU">
+            </div>
+            <div class="form-group mt-2">
+                <label for="telefone">Telefone:</label>
+                <input class="form-control" id="telefone" name="telefone" />
+            </div>
+            <div class="form-group mt-2">
+                <label for="email">E-mail:</label>
+                <input class="form-control" id="email" name="email" />
+            </div>
+            <div class="form-group mt-2">
+                <label for="endereco">Endereço:</label>
+                <input class="form-control" id="endereco" name="endereco" />
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="mt-4 btn btn-primary" onclick="editar()">Salvar</button>
+
+                <a asp-action="Index" class="mt-4 btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>

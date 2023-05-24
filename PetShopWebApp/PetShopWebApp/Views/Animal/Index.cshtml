@@ -1,0 +1,51 @@
+﻿@model IEnumerable<PetShopWebApp.Models.AnimalModel>
+
+@{
+    ViewData["Title"] = "Lista de Animais";
+}
+
+<h1>Lista de Animais</h1>
+
+<p>
+    <a class="btn btn-primary" asp-controller="Animal" asp-action="Criar"> Cadastrar Animal</a>
+</p>
+<div>
+    <table class="table text-white">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Tipo</th>
+                <th>Raça</th>
+                <th>Responsável</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>@m.Id</td>
+                    <td> @m.Nome</td>
+                    <td> @m.Idade</td>
+                    <td> @m.Tipo.</td>
+                    <td> @m.Raca.</td>
+                    <td> @m.UsuarioId</td>
+                    <td>
+                        <a asp-controller="Animal" asp-action="Editar" asp-route-id="@m.Id" class="btn btn-primary">Editar</a>
+                        <a asp-controller="Animal" asp-action="Deletar" asp-route-id="@m.Id" class="btn btn-danger">Apagar</a>
+                        <a asp-controller="Animal" asp-action="Detalhes" asp-route-id="@m.Id" class="btn btn-info">Detalhes</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+
+<script>
+
+</script>
