@@ -1,0 +1,118 @@
+﻿@model PetShopWebApp.Models.AnimalModel
+
+@{
+    ViewData["Title"] = "Criar Animal";
+}
+
+<h1>Cadastrar Animal</h1>
+
+
+<script>
+    async function RequestAjax(url, params, metodo) {
+        metodo = metodo == undefined || metodo == "" ? "GET" : metodo;
+
+        let result;
+
+        await $.ajax({
+            url: url,
+            data: params,
+            method: metodo,
+            async: true
+        }).done(async function (data) {
+            result = data;
+        });
+
+        return result;
+    }
+
+    async function criar() {
+        // Obter os valores dos campos
+        var nome = document.getElementById("nome").value;
+        var idade = document.getElementById("idade").value;
+        var tipo = document.getElementById("tipo").value;
+        var raca = document.getElementById("raca").value;
+
+        var nomeU = document.getElementById("nomeU").value;
+        var telefone = document.getElementById("telefone").value;
+        var email = document.getElementById("email").value;
+        var endereco = document.getElementById("endereco").value;
+
+         
+        var responsavel = {
+            nome: nomeU,
+            telefone: telefone,
+            email: email,
+            endereco: endereco
+        }
+
+        const req = await RequestAjax("/Usuario/CriarUsuario", { usuario: responsavel }, "POST")
+        if (!req.erro) {
+            console.log(req)
+            var animal = {
+                nome: nome,
+                idade: idade,
+                tipo: tipo,
+                raca: raca,
+                usuarioId: req.data.id
+            }
+            const req2 = await RequestAjax("/Animal/CriarAnimal", { animal: animal }, "POST")
+            if (!req2.erro) {
+                window.location.href = '/Animal/Index'
+            }
+        }
+
+
+
+       
+    }
+</script>
+
+<div class="row">
+    <div class="col-md-4">
+        <h4>Dados do animal</h4>
+        <form>
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" class="form-control" id="nome" name="nome">
+            </div>
+            <div class="form-group mt-2">
+                <label for="idade">Idade:</label>
+                <input class="form-control" id="idade" name="idade" />
+            </div>
+            <div class="form-group mt-2">
+                <label for="Status" class="control-label">Tipo:</label>
+                <select class="form-control" id="tipo" name="Tipo">
+                    <option value="1">Gato</option>
+                    <option value="2">Cachorro</option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label for="raca">Raça:</label>
+                <input class="form-control" id="raca" name="raca" />
+            </div>
+            <h4 class="mt-4"> Dados do reponsável</h4>
+            <div class="form-group">
+                <label for="nomeU">Nome:</label>
+                <input class="form-control" id="nomeU" name="nomeU">
+            </div>
+            <div class="form-group mt-2">
+                <label for="telefone">Telefone:</label>
+                <input class="form-control" id="telefone" name="telefone" />
+            </div>
+            <div class="form-group mt-2">
+                <label for="email">E-mail:</label>
+                <input class="form-control" id="email" name="email" />
+            </div>
+            <div class="form-group mt-2">
+                <label for="endereco">Endereço:</label>
+                <input class="form-control" id="endereco" name="endereco"/>
+            </div>
+
+            <button type="button" class="mt-4 btn btn-primary" onclick="criar()">Cadastrar</button>
+
+            <a asp-action="Index" class="mt-4 btn btn-secondary">Voltar</a>
+
+        </form>
+    </div>
+</div>

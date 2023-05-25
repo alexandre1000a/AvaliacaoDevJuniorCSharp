@@ -1,0 +1,9 @@
+Primeiramente abra o projeto PetShopWebApi e no arquivo appsettings.json configure a string de conexão com as credenciais Oracle do seu pc:
+"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SID=XE)));User Id=seu_usuario;Password=sua_senha;DBA Privilege=SYSDBA;"
+
+Após isso execute no terminal do nuget o comando 
+Update-Database -Context DBContext para rodar a migration.
+
+Após isso basta start a api.
+
+Em seguida abra o projeto PetShopWebApp e e de start, lembrando que a a url da api que está setada nesse projeto é :"https://localhost:7107/api/", caso a sua api esteja rodando em outra porta faça essa alteração para que o app web consiga enxergar a api.
